@@ -68,6 +68,7 @@ public class ComponentContainer
 
     public void setName(String name)
     {
+        System.out.println("setname:'" + name + "'");
         this.name = name;
     }
 

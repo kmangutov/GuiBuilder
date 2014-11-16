@@ -50,9 +50,15 @@ public class TreeDisplay implements MouseListener
 		list.addMouseListener(this);
 	}
 
+    /*
+     * When update is called, cache componentlist
+     */
 	public void update(ArrayList<ComponentContainer> components)
 	{
-		this.components = components;
+        if(components != null)
+		    this.components = components;
+        else
+            components = this.components;
 		
 		model = new DefaultListModel();
 		

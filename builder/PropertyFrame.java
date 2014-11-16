@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 public class PropertyFrame implements java.awt.event.ActionListener{
 	public static void main(String[] args){new PropertyFrame(null);}
 	
-	ComponentContainer container;
-	TreeDisplay parent;
+	private ComponentContainer container;
+	public TreeDisplay parent;
 	
 	public void associate(ComponentContainer cc)
 	{
@@ -25,6 +25,8 @@ public class PropertyFrame implements java.awt.event.ActionListener{
 	
 	javax.swing.JFrame frame;
 	public PropertyFrame(TreeDisplay parent){
+
+        this.parent = parent;
 		frame = new javax.swing.JFrame();
 		javax.swing.JPanel panel = new javax.swing.JPanel();
 		frame.add(panel);
@@ -99,19 +101,15 @@ public class PropertyFrame implements java.awt.event.ActionListener{
 	{
 		return Integer.parseInt(s);
 	}
+    
 	public void actionPerformed(java.awt.event.ActionEvent e){
+
 		JButton source = (JButton)e.getSource();
 		if(source.getText().equals("Cancel"))
 			frame.hide();
 		else
 		{
-			/*
-			 * 		Textfield3.setText(cc.name);
-					Textfield1.setText(cc.component.getX() + "");
-					Textfield2.setText(cc.component.getY() + "");
-					Textfield4.setText(cc.component.getWidth() + "");
-					Textfield5.setText(cc.component.getHeight() + "");
-			 */
+
 			try{
 				
 				container.setName(Textfield3.getText());
