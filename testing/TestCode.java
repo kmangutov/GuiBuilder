@@ -1,4 +1,4 @@
-package testing;
+/*package testing;
 
 import static org.junit.Assert.*;
 
@@ -75,3 +75,4 @@ public class TestCode
 		assertTrue(wrapper != null);
 	}
 }
+*/

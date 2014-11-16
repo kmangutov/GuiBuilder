@@ -3,6 +3,9 @@ package builder;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+/*
+ * This class was made with the guibuilder haha
+ */
 public class PropertyFrame implements java.awt.event.ActionListener{
 	public static void main(String[] args){new PropertyFrame(null);}
 	
@@ -13,7 +16,7 @@ public class PropertyFrame implements java.awt.event.ActionListener{
 	{
 		container = cc;
 		
-		Textfield3.setText(cc.name);
+		Textfield3.setText(cc.getName());
 		Textfield1.setText(cc.component.getX() + "");
 		Textfield2.setText(cc.component.getY() + "");
 		Textfield4.setText(cc.component.getWidth() + "");
@@ -111,7 +114,7 @@ public class PropertyFrame implements java.awt.event.ActionListener{
 			 */
 			try{
 				
-				container.name = Textfield3.getText();
+				container.setName(Textfield3.getText());
 				container.component.setBounds(atoi(Textfield1.getText()), 
 												atoi(Textfield2.getText()),
 												atoi(Textfield4.getText()), 

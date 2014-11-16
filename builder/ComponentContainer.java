@@ -10,9 +10,8 @@ import static builder.StringBuilder.*;
 public class ComponentContainer 
 {
 	public Component component;
-	String name = "";
-	int id = -1;
-	
+	private String name = "";
+	private int id = -1;
 
 	/**
 	 * Initialize ComponentContainer to wrap element
@@ -60,6 +59,20 @@ public class ComponentContainer
 	public String toString()
 	{
 		return getDeclaration() + getSetup();
-
 	}
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
 }

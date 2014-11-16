@@ -26,23 +26,27 @@ import javax.swing.JTextField;
 public class ComponentManager implements ActionListener
 {
 	//display ui?
-	boolean visual;
-	
-	String defaultText = "text";
+	private boolean visual;
+	private String defaultText = "text";
 	
 	public enum Type{Label, Button, Textfield, Combobox, Scrollbar};
 	
-	String fileUrl = "src/Frame.java";
+	private String fileUrl = "src/Frame.java";
 	
 	//keep count of component types for naming (ie Button1, Label1, Label2...)
-	HashMap<Type, Integer> componentSorter;
+	private HashMap<Type, Integer> componentSorter;
 	
-	ArrayList<ComponentContainer> components;
-	MockFrame mockFrame;
+	private ArrayList<ComponentContainer> components;
+	private MockFrame mockFrame;
 	
-	TreeDisplay tree;
-	
-	/**
+	private TreeDisplay tree;
+
+    public static void main(String[] args)
+    {
+        ComponentManager cm = new ComponentManager(true);
+    }
+
+    /**
 	 * Initialize mockup ui and component array
 	 */
 	public ComponentManager(boolean visual)
@@ -59,29 +63,20 @@ public class ComponentManager implements ActionListener
 		componentSorter = new HashMap<Type, Integer>();
 	}
 	
-	
-	public String printFrameInit()
+	private String printFrameInit()
 	{
 		String init = "javax.swing.JFrame frame = new javax.swing.JFrame();\njavax.swing.JPanel panel = new javax.swing.JPanel();\nframe.add(panel);\npanel.setLayout(null);\n";
 		return init;
 	}
-	
-	
-	public static void main(String[] args)
-	{
-		ComponentManager cm = new ComponentManager(true);	
-	}
-
-
 
 	/**
-	 * Print state of component array
+	 * Print state of component array - for debugging
 	 */
-	public void printComponents()
+	private void printComponents()
 	{
 		for(ComponentContainer cc : components)
 		{
-			System.out.println(cc.id + ":" + cc.component.getLocation());
+			System.out.println(cc.getId() + ":" + cc.component.getLocation());
 		}
 	}
 	
@@ -108,55 +103,41 @@ public class ComponentManager implements ActionListener
 	 * @param type
 	 * @return ComponentContainer
 	 */
-	public ComponentContainer createComponent(Type type)
+	private ComponentContainer createComponent(Type type)
 	{
 		//component to wrap
 		Component instance = null;
-		//counter to label it
-		int id = 1;
-		
-		if(componentSorter.containsKey(type))
-		{
-			id = componentSorter.get(type) + 1;
-			componentSorter.put(type, id);
-		}
-		else
-		{
-			componentSorter.put(type, 1);
-		}
-		
-		if(type == Type.Button)
-		{
-			instance = new JButton(defaultText);
-		}
-		else
-		if(type == Type.Label)
-		{
-			instance = new JLabel(defaultText);
-		}
-		else
-		if(type == Type.Textfield)
-		{
-			instance = new JTextField(defaultText);
-			instance.setEnabled(false);
-		}
-		else
-		if(type == Type.Combobox)
-		{
-			instance = new JComboBox();
-			instance.setEnabled(false);
-		}
-		else
-		if(type == Type.Scrollbar)
-		{
-			instance = new JScrollBar(Scrollbar.HORIZONTAL, 0, 60, 0, 60);
-			instance.setEnabled(false);
-		}
-		
+
+        //Label first textbox textbox1, next textbox textbox2, etc for buttons
+        int id = componentSorter.containsKey(type)?(componentSorter.get(type) + 1):1;
+        componentSorter.put(type, id);
+
+        switch(type) {
+            case Button:
+                instance = new JButton(defaultText);
+                break;
+            case Label:
+                instance = new JLabel(defaultText);
+                break;
+            case Textfield:
+                instance = new JTextField(defaultText);
+                instance.setEnabled(false);
+                break;
+            case Combobox:
+                instance = new JComboBox();
+                instance.setEnabled(false);
+                break;
+            case Scrollbar:
+                instance = new JScrollBar(Scrollbar.HORIZONTAL, 0, 60, 0, 60);
+                instance.setEnabled(false);
+                break;
+            default:
+                System.out.println("Unknown component type");
+        }
+
 		ComponentContainer container = new ComponentContainer(instance, type.toString() + id);
 		return container;
 	}
-	
 
 	/**
 	 * Returns a publicly accessable list of components
@@ -171,40 +152,44 @@ public class ComponentManager implements ActionListener
 	 * Process an "Add" command
 	 * @param txt Name of menu item
 	 */
-	public void processAddCommand(String txt)
+	private void processAddCommand(String txt)
 	{
 		ComponentContainer container = null;
+        Type type = Type.Button;
+
 		if(txt.equals("Add Button"))
 		{
-			container = createComponent(Type.Button);
+	        type = Type.Button;
 		}
 		else
 		if(txt.equals("Add Textfield"))
 		{
-			container = createComponent(Type.Textfield);
+			type = Type.Textfield;
 		}
 		else
 		if(txt.equals("Add Label"))
 		{
-			container = createComponent(Type.Label);
+			type = Type.Label;
 		}
 		else
 		if(txt.equals("Add Combobox"))
 		{
-			container = createComponent(Type.Combobox);
+			type = Type.Combobox;
 		}
 		else
 		if(txt.equals("Add Scrollbar"))
 		{
-			container = createComponent(Type.Scrollbar);
+			type = Type.Scrollbar;
 		}
+
+        container = createComponent(type);
 		addComponent(container);
 	}
 	
-	String psvm = "public class Frame implements java.awt.event.ActionListener{\n\tpublic static void main(String[] args){new Frame();}\n\tpublic Frame(){";
-	String action = "public void actionPerformed(java.awt.event.ActionEvent e){javax.swing.JOptionPane.showMessageDialog(null, e.toString());}";
+	private String psvm = "public class Frame implements java.awt.event.ActionListener{\n\tpublic static void main(String[] args){new Frame();}\n\tpublic Frame(){";
+	private String action = "public void actionPerformed(java.awt.event.ActionEvent e){javax.swing.JOptionPane.showMessageDialog(null, e.toString());}";
 
-	public void printCode() throws FileNotFoundException, UnsupportedEncodingException
+	private void printCode() throws FileNotFoundException, UnsupportedEncodingException
 	{
 		PrintWriter writer = new PrintWriter(fileUrl, "UTF-8");
 		
@@ -228,14 +213,14 @@ public class ComponentManager implements ActionListener
 			for(String s : cc.getSetup().split("\n"))//split into \n to print each with tabs
 				writer.println(tab + s);
 			if(cc.component instanceof JButton)
-				writer.println(tab + cc.name + ".addActionListener(this);");
+				writer.println(tab + cc.getName() + ".addActionListener(this);");
 			writer.println();
 		}
 		
 		writer.println("\n");
 		for(ComponentContainer cc : components)
 		{
-			writer.println(tab + "panel.add(" + cc.name + ");");
+			writer.println(tab + "panel.add(" + cc.getName() + ");");
 		}
 		writer.println(tab + "frame.show();");
 		writer.println("\t}");
@@ -253,9 +238,14 @@ public class ComponentManager implements ActionListener
 	}
 
 	
-	String dir = "C:\\Users\\Kirill\\Documents\\class\\cs242\\Assignment4.2\\src\\";
-	String[] cmds = new String[]{"run.bat"};//"javac Frame.java", "java Frame"};//
-	
+	private String dir = "C:\\Users\\Kirill\\Documents\\class\\cs242\\Assignment4.2\\src\\";
+	private String[] cmds = new String[]{"run.bat"};
+
+    public void setDir(String dir)
+    {
+        this.dir = dir;
+    }
+
 	public void runMock()
 	{
 		try{

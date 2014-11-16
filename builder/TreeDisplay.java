@@ -12,21 +12,23 @@ import javax.swing.event.ListSelectionListener;
 
 public class TreeDisplay implements MouseListener
 {
-	JFrame frame;
-	JList list;
+	private JFrame frame;
+	private JList list;
 	
-	DefaultListModel model;
+	private DefaultListModel model;
 	
-	ArrayList<ComponentContainer> components;
+	private ArrayList<ComponentContainer> components;
 	
 	public TreeDisplay()
 	{
 		initUI();
 	}
+
 	public void forceUpdate()
 	{
 		update(components);
 	}
+
 	public void initUI()
 	{
 		frame = new JFrame("Components");
@@ -47,6 +49,7 @@ public class TreeDisplay implements MouseListener
 		
 		list.addMouseListener(this);
 	}
+
 	public void update(ArrayList<ComponentContainer> components)
 	{
 		this.components = components;
@@ -55,21 +58,23 @@ public class TreeDisplay implements MouseListener
 		
 		for(ComponentContainer component : components)
 		{
-			model.addElement(component.name);
+			model.addElement(component.getName());
 		}
 		
 		list.setModel(model);
 		frame.repaint();
 	}
+
 	public ComponentContainer byName(String name)
 	{
 		for(ComponentContainer cc : components)
 		{
-			if(cc.name == name)
+			if(cc.getName().equals(name))
 				return cc;
 		}
 		return null;
 	}
+
 	public void doubleClick()
 	{
 		String item = (String)list.getSelectedValue();
@@ -82,7 +87,6 @@ public class TreeDisplay implements MouseListener
 			properties.associate(container);
 		}
 	}
-	
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) 

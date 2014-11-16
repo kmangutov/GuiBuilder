@@ -7,25 +7,26 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 
+/*
+ * Class to manage draggable UI elements
+ */
 public class Mover implements MouseListener, MouseMotionListener
 {
-	/*
-	 * Class to manage draggable UI elements
-	 */
-	
-	boolean resize = false;
-	boolean drag = false;
-	int initX = 0;
-	int initY = 0;
-	
-	Component component = null;
-	
-	public Mover()
-	{
 
+	private boolean resize = false;
+	private boolean drag = false;
+	private int initX = 0;
+	private int initY = 0;
+	
+	private Component component = null;
+    private SnapPanel panel;
+
+    private float resizeThreshold = 0.75f;
+
+	public Mover(SnapPanel panel)
+	{
+        this.panel = panel;
 	}
-	
-	
 
 	/*
 	 * Register a component to listen for movement
@@ -47,7 +48,6 @@ public class Mover implements MouseListener, MouseMotionListener
 		{
 			Point dest = arg0.getLocationOnScreen();
 			dest = new Point(dest.x - initX, dest.y - initY);
-			
 
 			component.setLocation(dest);
 			component.getParent().repaint();
@@ -61,6 +61,7 @@ public class Mover implements MouseListener, MouseMotionListener
 			component.setBounds(component.getX(), component.getY(), (int)arg0.getPoint().getX(), (int)arg0.getPoint().getY());
 		}
 	}
+
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 
@@ -82,7 +83,7 @@ public class Mover implements MouseListener, MouseMotionListener
 	}
 	
 	/*
-	 * Check which component was pressed and see if we ned to move it.
+	 * Check which component was pressed and see if we need to move it.
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
@@ -97,22 +98,20 @@ public class Mover implements MouseListener, MouseMotionListener
 		initY = p.y - component.getY();
 		
 		//System.out.println(initX);
-		if(arg0.getPoint().getX() > component.getWidth() * 0.75 && arg0.getPoint().getY() > component.getHeight() * 0.75)
+		if(arg0.getPoint().getX() > component.getWidth() * resizeThreshold && arg0.getPoint().getY() > component.getHeight() * resizeThreshold)
 			resize = true;
 		else
 			drag = true;
-		
-		
-		
 	}
+
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		drag = false;	
 		resize = false;
 		if(component != null)
 		{
-			component.setLocation(component.getX() - component.getX() % 20, 
-								component.getY() - component.getY() % 20);
+			component.setLocation(component.getX() - component.getX() % panel.getSnapDelta(),
+								component.getY() - component.getY() % panel.getSnapDelta());
 			component = null;
 		}
 	}

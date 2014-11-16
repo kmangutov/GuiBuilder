@@ -19,15 +19,14 @@ import javax.swing.JPopupMenu;
 
 public class MockFrame implements MouseListener
 { 
-	JFrame frame;
-	Mover mover;
+	public JFrame frame;
+	private Mover mover;
 	
-	SnapPanel panel;
+	private SnapPanel panel;
 	
 	public Menu popup;
 	
-	Point lastClick = new Point(-1, -1);
-
+	private Point lastClick = new Point(-1, -1);
 	
 	/*
 	 * Initializes mock frame UI with a panel that will contain all our UI elements.
@@ -36,13 +35,14 @@ public class MockFrame implements MouseListener
 	{
 		popup = new Menu(manager);
 		
-		mover = new Mover();
+
 		frame = new JFrame();
 		frame.setSize(500, 500);
 		
 		panel = new SnapPanel();
 		panel.addMouseListener(this);
 		panel.setSize(10, 200);
+        mover = new Mover(panel);
 		
 		panel.setLayout(null);
 		frame.add(panel);
@@ -109,8 +109,9 @@ public class MockFrame implements MouseListener
 			handleModify(e);
 		}
 	}
+
 	public void mouseEntered(MouseEvent e) {
-		
+
 	}
 
 	public void mouseExited(MouseEvent e) {
