@@ -8,15 +8,13 @@ import javax.swing.JPopupMenu;
 
 /**
  * Menu to manage UI elements
- * @author Kirill
  *
+ * @author Kirill
  */
-public class ContextMenu extends JSimpleMenu
-{
-	private static String menu = "Text;Delete";
-	
-	public ContextMenu(ComponentManager manager)
-	{
-		super(manager, menu);
-	}
+public class ContextMenu extends JSimpleMenu {
+    private static String menu = "Text;Delete";
+
+    public ContextMenu(ComponentManager manager) {
+        super(manager, menu);
+    }
 }

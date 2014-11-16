@@ -11,40 +11,35 @@ import javax.swing.JPanel;
  * Draws the grid
  */
 
-public class SnapPanel extends JPanel
-{
-	private int snapX = 20;
-	private int snapY = 20;
-	
-	public boolean dragging = true;
-	
-	public SnapPanel()
-	{
-	
-	}
+public class SnapPanel extends JPanel {
+    private int snapX = 20;
+    private int snapY = 20;
 
-    public int getSnapDelta()
-    {
+    public boolean dragging = true;
+
+    public SnapPanel() {
+
+    }
+
+    public int getSnapDelta() {
         return snapX;
     }
 
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-		if(dragging)
-			paintSnap(g);
-	}
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-	public void paintSnap(Graphics g)
-	{
-		g.setColor(Color.GRAY);
-		
-		for(int y = 0; y < this.getHeight(); y += snapY)
-			g.drawLine(0, y, getWidth(), y);
-		for(int x = 0; x < getWidth(); x += snapX)
-			g.drawLine(x, 0, x, getHeight());
-				
-		g.setColor(Color.BLACK);
-	}
+        if (dragging)
+            paintSnap(g);
+    }
+
+    public void paintSnap(Graphics g) {
+        g.setColor(Color.GRAY);
+
+        for (int y = 0; y < this.getHeight(); y += snapY)
+            g.drawLine(0, y, getWidth(), y);
+        for (int x = 0; x < getWidth(); x += snapX)
+            g.drawLine(x, 0, x, getHeight());
+
+        g.setColor(Color.BLACK);
+    }
 }

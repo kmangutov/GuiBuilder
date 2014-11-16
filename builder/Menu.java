@@ -8,15 +8,13 @@ import javax.swing.JPopupMenu;
 
 /**
  * Menu to manager UI elements
- * @author Kirill
  *
+ * @author Kirill
  */
-public class Menu extends JSimpleMenu
-{
-	private static String menu = "Add...->Add Button,Add Textfield,Add Label,Add Combobox,Add Scrollbar;Print Code;Run Mock";
-	
-	public Menu(ComponentManager manager)
-	{
+public class Menu extends JSimpleMenu {
+    private static String menu = "Add...->Add Button,Add Textfield,Add Label,Add Combobox,Add Scrollbar;Print Code;Run Mock";
+
+    public Menu(ComponentManager manager) {
         super(manager, menu);
-	}
+    }
 }
